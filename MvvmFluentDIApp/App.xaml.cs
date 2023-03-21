@@ -22,8 +22,8 @@ namespace MvvmFluentDIApp
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<ISnackbarService, SnackbarService>();
 
-            services.AddScoped<DashboardView>();
-            services.AddScoped<DashboardViewModel>();
+            services.AddScoped<SettingsView>();
+            services.AddScoped<SettingsViewModel>();
 
             services.AddScoped<HomeView>();
             services.AddScoped<HomeViewModel>();

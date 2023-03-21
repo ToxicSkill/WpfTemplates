@@ -2,7 +2,7 @@
 
 namespace MvvmFluentDIApp.ViewModels
 {
-    public partial class DashboardViewModel : ObservableObject
+    public partial class SettingsViewModel : ObservableObject
     {
     }
 }

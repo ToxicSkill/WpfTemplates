@@ -36,10 +36,10 @@ namespace MvvmFluentDIApp.ViewModels
             FooterItems.Add(new NavigationItem()
             {
                 Icon = SymbolRegular.Settings20,
-                PageTag = "dashboard",
+                PageTag = "settings",
                 Cache = true,
-                Content = "Dashboard",
-                PageType = typeof(DashboardView)
+                Content = "Settings",
+                PageType = typeof(SettingsView)
             });
         }
     }
