@@ -17,6 +17,7 @@ namespace MvvmFluentDIApp.Views
         {
             ViewModel = viewModel;
             InitializeComponent();
+            DataContext = ViewModel;
         }
     }
 }

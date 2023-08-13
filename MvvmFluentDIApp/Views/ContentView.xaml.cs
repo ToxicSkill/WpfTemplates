@@ -6,14 +6,14 @@ namespace MvvmFluentDIApp.Views
     /// <summary>
     /// Interaction logic for Dashboard.xaml
     /// </summary>
-    public partial class SettingsView : INavigableView<SettingsViewModel>
+    public partial class ContentView : INavigableView<ContentViewModel>
     {
-        public SettingsViewModel ViewModel
+        public ContentViewModel ViewModel
         {
             get;
         }
 
-        public SettingsView(SettingsViewModel viewModel)
+        public ContentView(ContentViewModel viewModel)
         {
             ViewModel = viewModel;
             InitializeComponent();

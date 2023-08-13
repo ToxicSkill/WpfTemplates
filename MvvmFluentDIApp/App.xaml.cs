@@ -25,6 +25,9 @@ namespace MvvmFluentDIApp
             services.AddScoped<SettingsView>();
             services.AddScoped<SettingsViewModel>();
 
+            services.AddScoped<ContentView>();
+            services.AddScoped<ContentViewModel>();
+
             services.AddScoped<HomeView>();
             services.AddScoped<HomeViewModel>();
 
