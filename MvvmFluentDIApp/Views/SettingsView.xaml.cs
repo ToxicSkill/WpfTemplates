@@ -1,17 +1,16 @@
 ﻿using MvvmFluentDIApp.ViewModels;
-using Wpf.Ui.Common.Interfaces;
+using Wpf.Ui.Controls;
+
 
 namespace MvvmFluentDIApp.Views
 {
     /// <summary>
     /// Interaction logic for Dashboard.xaml
     /// </summary>
-    public partial class SettingsView : INavigableView<SettingsViewModel>
+    public partial class SettingsView : INavigableView<ViewModels.SettingsViewModel>
     {
-        public SettingsViewModel ViewModel
-        {
-            get;
-        }
+        public SettingsViewModel ViewModel { get; set; }
+
 
         public SettingsView(SettingsViewModel viewModel)
         {

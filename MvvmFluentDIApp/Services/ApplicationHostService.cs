@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MvvmFluentDIApp.Interfaces;
 using MvvmFluentDIApp.Views;
 using System;
@@ -6,59 +8,64 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using Wpf.Ui.Mvvm.Contracts;
 
 namespace MvvmFluentDIApp.Services;
 
+/// <summary>
+/// Managed host of the application.
+/// </summary>
 public class ApplicationHostService : IHostedService
 {
     private readonly IServiceProvider _serviceProvider;
-    private readonly INavigationService _navigationService;
-    private readonly ICustomPageService _pageService;
-    private readonly IThemeService _themeService;
 
-    private INavigationWindow _navigationWindow;
-
-    public ApplicationHostService(IServiceProvider serviceProvider,
-        INavigationService navigationService,
-        ICustomPageService pageService,
-        IThemeService themeService)
+    public ApplicationHostService(IServiceProvider serviceProvider)
     {
+        // If you want, you can do something with these services at the beginning of loading the application.
         _serviceProvider = serviceProvider;
-        _navigationService = navigationService;
-        _pageService = pageService;
-        _themeService = themeService;
     }
 
-    public async Task StartAsync(CancellationToken cancellationToken)
+    /// <summary>
+    /// Triggered when the application host is ready to start the service.
+    /// </summary>
+    /// <param name="cancellationToken">Indicates that the start process has been aborted.</param>
+    public Task StartAsync(CancellationToken cancellationToken)
     {
-        PrepareNavigation();
-
-        await HandleActivationAsync();
+        return HandleActivationAsync();
     }
 
-    public async Task StopAsync(CancellationToken cancellationToken)
+    /// <summary>
+    /// Triggered when the application host is performing a graceful shutdown.
+    /// </summary>
+    /// <param name="cancellationToken">Indicates that the shutdown process should no longer be graceful.</param>
+    public Task StopAsync(CancellationToken cancellationToken)
     {
-        await Task.CompletedTask;
+        return Task.CompletedTask;
     }
 
-    private async Task HandleActivationAsync()
+    /// <summary>
+    /// Creates main window during activation.
+    /// </summary>
+    private Task HandleActivationAsync()
     {
-        await Task.CompletedTask;
-
-        if (!Application.Current.Windows.OfType<MainWindow>().Any())
+        if (Application.Current.Windows.OfType<MainWindow>().Any())
         {
-            _navigationWindow = _serviceProvider.GetService(typeof(INavigationWindow)) as INavigationWindow;
-            _navigationWindow!.ShowWindow();
-
-            _navigationWindow.Navigate(typeof(HomeView));
+            return Task.CompletedTask;
         }
 
-        await Task.CompletedTask;
+        IWindow mainWindow = _serviceProvider.GetRequiredService<IWindow>();
+        mainWindow.Loaded += OnMainWindowLoaded;
+        mainWindow?.Show();
+
+        return Task.CompletedTask;
     }
 
-    private void PrepareNavigation()
+    private void OnMainWindowLoaded(object sender, RoutedEventArgs e)
     {
-        _navigationService.SetPageService(_pageService);
+        if (sender is not MainWindow mainWindow)
+        {
+            return;
+        }
+
+        _ = mainWindow.NavigationView.Navigate(typeof(HomeView));
     }
 }

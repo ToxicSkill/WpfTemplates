@@ -1,17 +1,14 @@
 ﻿using MvvmFluentDIApp.ViewModels;
-using Wpf.Ui.Common.Interfaces;
+using Wpf.Ui.Controls;
 
 namespace MvvmFluentDIApp.Views
 {
     /// <summary>
     /// Interaction logic for Dashboard.xaml
     /// </summary>
-    public partial class HomeView : INavigableView<HomeViewModel>
+    public partial class HomeView : INavigableView<ViewModels.HomeViewModel>
     {
-        public HomeViewModel ViewModel
-        {
-            get;
-        }
+        public HomeViewModel ViewModel { get; set; }
 
         public HomeView(HomeViewModel viewModel)
         {
@@ -19,5 +16,6 @@ namespace MvvmFluentDIApp.Views
             InitializeComponent();
             DataContext = ViewModel;
         }
+
     }
 }

@@ -1,59 +1,80 @@
 ﻿using MvvmFluentDIApp.Interfaces;
 using MvvmFluentDIApp.ViewModels;
+using MvvmFluentDIApp.Views;
 using System;
-using System.Windows.Controls;
-using System.Windows.Input;
-using Wpf.Ui.Controls.Interfaces;
-using Wpf.Ui.Mvvm.Contracts;
+using System.Windows;
+using Wpf.Ui;
+using Wpf.Ui.Controls;
 
 namespace MvvmFluentDIApp
 {
-    public partial class MainWindow : INavigationWindow
+    public partial class MainWindow : IWindow
     {
-        public MainWindowViewModel ViewModel
-        {
-            get;
-        }
+        public MainWindowViewModel ViewModel { get; set; }
 
-        public MainWindow(MainWindowViewModel viewModel,
-            INavigationService navigationService,
-            ICustomPageService pageService,
-            ISnackbarService snackbarService)
+        public MainWindow(
+        MainWindowViewModel viewModel,
+        INavigationService navigationService,
+        IServiceProvider serviceProvider,
+        ISnackbarService snackbarService)
         {
-            Wpf.Ui.Appearance.Watcher.Watch(this);
             ViewModel = viewModel;
-            DataContext = ViewModel;
+            DataContext = this;
+
             InitializeComponent();
 
-            SetPageService(pageService);
-            navigationService.SetNavigationControl(RootNavigation);
-            snackbarService.SetSnackbarControl(RootSnackbar);
+            snackbarService.SetSnackbarPresenter(RootSnackbar);
+            navigationService.SetNavigationControl(NavigationView);
+
+            NavigationView.SetServiceProvider(serviceProvider);
+        }
+        private bool _isUserClosedPane;
+
+        private bool _isPaneOpenedOrClosedFromCode;
+
+        private void OnNavigationSelectionChanged(object sender, RoutedEventArgs e)
+        {
+            if (sender is not Wpf.Ui.Controls.NavigationView navigationView)
+            {
+                return;
+            }
+
+            NavigationView.HeaderVisibility =
+                navigationView.SelectedItem?.TargetPageType != typeof(HomeView)
+                    ? Visibility.Visible
+                    : Visibility.Collapsed;
         }
 
-        public Frame GetFrame()
-            => RootFrame;
-
-        public INavigation GetNavigation()
-            => RootNavigation;
-
-        public bool Navigate(Type pageType)
-            => RootNavigation.Navigate(pageType);
-
-        public void SetPageService(IPageService pageService)
-            => RootNavigation.PageService = pageService;
-
-        public void ShowWindow()
-            => Show();
-
-        public void CloseWindow()
-            => Close();
-
-        private void SymbolIcon_MouseDown(object sender, MouseButtonEventArgs e)
+        private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Left)
+            if (_isUserClosedPane)
             {
-                this.DragMove();
+                return;
             }
+
+            _isPaneOpenedOrClosedFromCode = true;
+            NavigationView.IsPaneOpen = !(e.NewSize.Width <= 1200);
+            _isPaneOpenedOrClosedFromCode = false;
+        }
+
+        private void NavigationView_OnPaneOpened(NavigationView sender, RoutedEventArgs args)
+        {
+            if (_isPaneOpenedOrClosedFromCode)
+            {
+                return;
+            }
+
+            _isUserClosedPane = false;
+        }
+
+        private void NavigationView_OnPaneClosed(NavigationView sender, RoutedEventArgs args)
+        {
+            if (_isPaneOpenedOrClosedFromCode)
+            {
+                return;
+            }
+
+            _isUserClosedPane = true;
         }
     }
 }

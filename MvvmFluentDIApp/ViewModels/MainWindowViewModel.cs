@@ -2,58 +2,31 @@
 using MvvmFluentDIApp.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Drawing;
-using System.Windows.Controls;
-using Wpf.Ui.Common;
 using Wpf.Ui.Controls;
-using Wpf.Ui.Controls.Interfaces;
-using Wpf.Ui.Controls.Navigation;
 
 namespace MvvmFluentDIApp.ViewModels
 {
     public partial class MainWindowViewModel : ObservableObject
     {
         [ObservableProperty]
-        public ICollection<INavigationControl> menuItems;
+        public ICollection<object> menuItems;
 
         [ObservableProperty]
-        public ICollection<INavigationControl> footerItems;
+        public ICollection<object> footerItems;
 
         public MainWindowViewModel()
         {
-            menuItems = new ObservableCollection<INavigationControl>();
-            footerItems = new ObservableCollection<INavigationControl>();
+            menuItems = new ObservableCollection<object>();
+            footerItems = new ObservableCollection<object>();
             InitializeMenu();
         }
 
         private void InitializeMenu()
         {
-            MenuItems.Add(new NavigationItem()
-            {
-                Icon = SymbolRegular.Home20,
-                PageTag = "home",
-                Cache = true,
-                Content = "Home",
-                PageType = typeof(HomeView)
-            });
-            MenuItems.Add(new NavigationSeparator());
-            MenuItems.Add(new NavigationItem()
-            {
-                Icon = SymbolRegular.ContentSettings20,
-                PageTag = "content",
-                Cache = true,
-                Content = "Content",
-                PageType = typeof(ContentView)
-            });
-            FooterItems.Add(new NavigationSeparator());
-            FooterItems.Add(new NavigationItem()
-            {
-                Icon = SymbolRegular.Settings20,
-                PageTag = "settings",
-                Cache = true,
-                Content = "Settings",
-                PageType = typeof(SettingsView)
-            });
+            MenuItems.Add(new NavigationViewItem("Home", SymbolRegular.Home20, typeof(HomeView)));
+            MenuItems.Add(new NavigationViewItem("Content", SymbolRegular.ContentSettings20, typeof(ContentView)));
+            FooterItems.Add(new NavigationViewItemSeparator());
+            FooterItems.Add(new NavigationViewItem("Settings", SymbolRegular.Settings20, typeof(SettingsView)));
         }
     }
 }

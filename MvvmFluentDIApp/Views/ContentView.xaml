@@ -1,4 +1,4 @@
-﻿<ui:UiPage x:Class="MvvmFluentDIApp.Views.ContentView"
+﻿<Page x:Class="MvvmFluentDIApp.Views.ContentView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -13,4 +13,4 @@
         <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding WelcomeString}" FontSize="32"/>
     </Grid>
 
-</ui:UiPage>
+</Page>

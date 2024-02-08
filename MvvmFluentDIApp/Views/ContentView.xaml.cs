@@ -1,12 +1,11 @@
 ﻿using MvvmFluentDIApp.ViewModels;
-using Wpf.Ui.Common.Interfaces;
 
 namespace MvvmFluentDIApp.Views
 {
     /// <summary>
     /// Interaction logic for Dashboard.xaml
     /// </summary>
-    public partial class ContentView : INavigableView<ContentViewModel>
+    public partial class ContentView
     {
         public ContentViewModel ViewModel
         {

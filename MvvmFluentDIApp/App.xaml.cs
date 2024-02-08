@@ -5,8 +5,7 @@ using MvvmFluentDIApp.Services;
 using MvvmFluentDIApp.ViewModels;
 using MvvmFluentDIApp.Views;
 using System.Windows;
-using Wpf.Ui.Mvvm.Contracts;
-using Wpf.Ui.Mvvm.Services;
+using Wpf.Ui;
 
 namespace MvvmFluentDIApp
 {
@@ -17,10 +16,11 @@ namespace MvvmFluentDIApp
         .ConfigureServices((context, services) =>
         {
             services.AddHostedService<ApplicationHostService>();
-            services.AddSingleton<IThemeService, ThemeService>();
-            services.AddSingleton<ICustomPageService, PageService>();
+            services.AddSingleton<IWindow, MainWindow>();
+            services.AddSingleton<MainWindowViewModel>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.AddSingleton<ISnackbarService, SnackbarService>();
+            services.AddSingleton<WindowsProviderService>();
 
             services.AddScoped<SettingsView>();
             services.AddScoped<SettingsViewModel>();
@@ -31,8 +31,6 @@ namespace MvvmFluentDIApp
             services.AddScoped<HomeView>();
             services.AddScoped<HomeViewModel>();
 
-            services.AddScoped<INavigationWindow, MainWindow>();
-            services.AddScoped<MainWindowViewModel>();
         }).Build();
 
         private async void OnStartup(object sender, StartupEventArgs e)

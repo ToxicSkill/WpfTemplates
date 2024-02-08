@@ -1,5 +1,5 @@
 ﻿using System;
-using Wpf.Ui.Mvvm.Contracts;
+using Wpf.Ui;
 
 namespace MvvmFluentDIApp.Interfaces
 {
